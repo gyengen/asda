@@ -169,8 +169,8 @@ class Asda_Calc:
         '''
 
         # Initial dictionary setup
-        self.edge_prop={'center':0, 'edge':0, 'points':0, 'peak':0, 
-                        'radius':0}
+        self.edge_prop={'center':(), 'edge':(), 'points':(), 'peak':(), 
+                        'radius':()}
 
         # Turn interactive plotting off
         plt.ioff()
@@ -205,19 +205,19 @@ class Asda_Calc:
                         idx = np.where(np.fabs(dust) == np.max(np.fabs(dust)))[0][0]
 
                         # Update dictionary key 'center'
-                        self.edge_prop['center'] += np.array(ps[idx])/factor
+                        self.edge_prop['center'] += (np.array(ps[idx])/factor,)
 
                         # Update dictionary key 'edge'
-                        self.edge_prop['edge'] += np.array(self.v)/factor
+                        self.edge_prop['edge'] += (np.array(self.v)/factor,)
 
                         # Update dictionary key 'points'
-                        self.edge_prop['points'] +=  np.array(ps)/factor
+                        self.edge_prop['points'] +=  (np.array(ps)/factor,)
 
                         # Update dictionary key 'peak'
-                        self.edge_prop['peak'] += dust[idx]
+                        self.edge_prop['peak'] += (dust[idx],)
 
                         # Update dictionary key 'radius'
-                        self.edge_prop['radius'] += re
+                        self.edge_prop['radius'] += (re,)
 
         return self.edge_prop
 

@@ -23,34 +23,37 @@ from datetime import datetime
 import asda
 
 
-# def artificial_vortex():
-#     '''
-#     Generate an artificial vortex using the Lamb_Oseen class in asda, then
-#     perform the vortex detection and visualisation
-#     '''
-beg_time = datetime.today()
-# Generate an artificial vortex
-vmax = 2.0 # rotating speed
-rmax = 50 # radius
-ratio = 0.2 # ratio of expanding speed over rotating speed
-lo = asda.Lamb_Oseen(vmax=vmax, rmax=rmax, ratio_vradial=ratio)
-# Generate vx and vy
-vx, vy = lo.get_vxvy(x_range=[-100, 100], y_range=[-100, 100])
-# Visualise it
-lo.visual_vortex()
+def artificial_vortex():
+    '''
+    Generate an artificial vortex using the Lamb_Oseen class in asda, then
+    perform the vortex detection and visualisation
+    '''
+    beg_time = datetime.today()
+    # Generate an artificial vortex
+    vmax = 2.0  # rotating speed
+    rmax = 50  # radius
+    ratio = 0.2  # ratio of expanding speed over rotating speed
+    lo = asda.Lamb_Oseen(vmax=vmax, rmax=rmax, ratio_vradial=ratio)
+    # Generate vx and vy
+    vx, vy = lo.get_vxvy(x_range=[-100, 100], y_range=[-100, 100])
+    # Visualise it
+    lo.visual_vortex()
 
-# perform vortex detection
-gamma = lo.gamma_values()
-lo.visual_gamma(gamma2=True)
-center_edge = lo.center_edge()
-(ve, vr, vc, ia) = lo.vortex_property()
+    # perform vortex detection
+    lo.gamma_values()
+    lo.visual_gamma(gamma2=True)
+    center_edge = lo.center_edge()
+    (ve, vr, vc, ia) = lo.vortex_property()
 
-# time used
-end_time = datetime.today()
-print('Time used ', end_time-beg_time)
+    # time used
+    end_time = datetime.today()
+    print('Time used ', end_time-beg_time)
 
-print('Detected vortex:')
-print('Center Location', cetner_edge['center'])
+    print('Detected vortex:')
+    print('Center Location', center_edge['center'])
+    print('Rotating Speed', vr)
+    print('Expanding Speed', ve)
+    print('Center Speed', vc)
 
 
 # vel_file = 'vel_demo.npz'  # file in which velocity field will be stored
