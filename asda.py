@@ -25,9 +25,10 @@ class Asda_Calc:
 
         '''
 
-        self.vx = vx
-
-        self.vy = vy
+        self.vx = np.array(vx)
+        self.vy = np.array(vy)
+        self.dshape = np.shape(vx)
+        
 
     def reform2d(self, array, factor=1):
         ''' Missing DOC
@@ -168,13 +169,15 @@ class Asda_Calc:
         '''
 
         # Initial dictionary setup
-        self.edge_prop={'center':0, 'edge':0, 'points':0, 'peak':0, 'radius':0}
+        self.edge_prop={'center':0, 'edge':0, 'points':0, 'peak':0, 
+                        'radius':0}
 
         # Turn interactive plotting off
         plt.ioff()
-
+        plt.figure(-1)
         # Find countours
         cs = plt.contour(self.gamma[...,1].T, levels=[-2 / np.pi, 2 / np.pi])
+        plt.close(-1)
 
         for i in range(len(cs.collections)):
 
@@ -194,7 +197,7 @@ class Asda_Calc:
                     # Missing comment
                     re = np.sqrt(np.array(ps).shape[0] / np.pi) / factor
 
-                    # allow some error around 0.9
+                  # allow some error around 0.9
                     # vortex with radius less than 4 pixels is not reliable
                     if np.max(np.fabs(dust)) >= gamma_min and re >= rmin:
 
@@ -202,19 +205,19 @@ class Asda_Calc:
                         idx = np.where(np.fabs(dust) == np.max(np.fabs(dust)))[0][0]
 
                         # Update dictionary key 'center'
-                        self.edge_prop['center'] += (np.array(ps[idx])/factor, )
+                        self.edge_prop['center'] += np.array(ps[idx])/factor
 
                         # Update dictionary key 'edge'
-                        self.edge_prop['edge'] += (np.array(v)/factor, )
+                        self.edge_prop['edge'] += np.array(self.v)/factor
 
                         # Update dictionary key 'points'
-                        self.edge_prop['points'] +=  (np.array(ps)/factor, )
+                        self.edge_prop['points'] +=  np.array(ps)/factor
 
                         # Update dictionary key 'peak'
-                        self.edge_prop['peak'] += (dust[idx], )
+                        self.edge_prop['peak'] += dust[idx]
 
                         # Update dictionary key 'radius'
-                        self.edge_prop['radius'] += (re, )
+                        self.edge_prop['radius'] += re
 
         return self.edge_prop
 
@@ -229,21 +232,20 @@ class Asda_Calc:
             ia: average the observation values (intensity or magnetic field)
                 within the vortices if image is given
         '''
-        self.vx = np.array(self.vx)
-        self.vy = np.array(self.vy)
-        n_swirl = len(centers)
+        n_swirl = len(self.edge_prop['center'])
+        print(n_swirl)
         ve = ()
         vr = ()
         vc = ()
         ia = ()
 
         for i in range(n_swirl):
-            cen = centers[i]
-            edg = edges[i]
-            pnt = np.array(points[i], dtype=int)
+            cen = self.edge_prop['center'][i]
+            edg = self.edge_prop['edge'][i]
+            pnt = np.array(self.edge_prop['points'][i], dtype=int)
             x0 = int(round(cen[0]))
             y0 = int(round(cen[1]))
-            vcen = [self.vx[x0, y0], vy[x0, y0]]
+            vcen = [self.vx[x0, y0], self.vy[x0, y0]]
             vc = vc + (vcen, )
             if image is not None:
                 image = np.array(image).T
@@ -269,24 +271,25 @@ class Asda_Calc:
 
         return (ve, vr, vc, ia)
 
-    def visual_gamma(self, gamma_mean=True, fname=None, **kwargs):
+    def visual_gamma(self, gamma2=False, fname=None, **kwargs):
 
-        if gamma_mean:
+        if gamma2:
 
             # Select data
             gamma = self.gamma[...,1]
 
             # Plot title:
-            title = r'$\rho'
+            title = r'$\Gamma_2$'
         else:
 
             # Select data
             gamma = self.gamma[...,0]
 
             # Plot title:
-            title = r'$\rho'
+            title = r'$\Gamma_1$'
 
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(6, 6.0*self.dshape[1]/self.dshape[0]))
+        fig.canvas.set_window_title('Gamma Value') 
 
         # Show the image
         ax.imshow(gamma)
@@ -399,6 +402,7 @@ class Lamb_Oseen(Asda_Calc):
         # Missing comment
         self.xx, self.yy = np.meshgrid(np.arange(x_range[0], x_range[1]),
                                        np.arange(y_range[0], y_range[1]))
+        self.dshape = np.shape(self.xx)
 
         return self.xx, self.yy
 
@@ -495,14 +499,14 @@ class Lamb_Oseen(Asda_Calc):
         ------
         same here '''
         
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(6, 6.0*self.dshape[1]/self.dshape[0]))
 
-
+        fig.canvas.set_window_title('Lamb-Oseen Vortex')
         # Set image title
         ax.set_title('Lamb-Oseen Vortex') 
 
         # Generate a stream plot
-        ax.streamplot(self.xx, self.yy, self.vx.T, self.vy.T, **kwargs)
+        ax.streamplot(self.xx, self.yy, self.vx, self.vy, **kwargs)
 
         # Set axis labesl
         ax.set(xlabel='x', ylabel='y')
