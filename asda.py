@@ -64,7 +64,7 @@ class Asda_Calc:
         mask = measure.grid_points_in_poly((round(maxx - minx) + 1,
                                             round(maxy - miny) + 1), newPoly)
 
-        return [(x + minx, y + miny) for (x, y) in zip(*np.nonzero(grid))]
+        return [(x + minx, y + miny) for (x, y) in zip(*np.nonzero(mask))]
 
     def gamma_values(self, r=3, factor=1):
         '''
@@ -182,7 +182,7 @@ class Asda_Calc:
             for c in cs.collections[i].get_paths():
 
                 self.v = np.rint(c.vertices).tolist()
-                ps = points_in_poly(self.v)
+                ps = self.points_in_poly()
 
                 dust = []
 
