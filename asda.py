@@ -141,15 +141,15 @@ class Asda_Calc:
 
         # Create index array
         index=np.array([[i,j]
-                        for i in np.arange(r, self.vx.shape[0]-r)
-                        for j in np.arange(r, self.vy.shape[1]-r)]).T
+                        for i in np.arange(r, self.dshape[0]-r)
+                        for j in np.arange(r, self.dshape[1]-r)]).T
 
         # Generate velocity field
         vel = Gen_Vel(index[0],index[1])
 
         # Iterate over the array gamma
-        for dim, (i, j) in enumerate(product(np.arange(r, self.vx.shape[0]-r, 1),
-                                             np.arange(r, self.vy.shape[1]-r, 1))):
+        for dim, (i, j) in enumerate(product(np.arange(r, self.dshape[0]-r, 1),
+                                             np.arange(r, self.dshape[1]-r, 1))):
 
             self.gamma[i, j, 0], self.gamma[i, j, 1] = Calc_Gamma(pm, vel[...,dim], pnorm, N)
 
@@ -288,7 +288,7 @@ class Asda_Calc:
             # Plot title:
             title = r'$\Gamma_1$'
 
-        fig, ax = plt.subplots(figsize=(6, 6.0*self.dshape[1]/self.dshape[0]))
+        fig, ax = plt.subplots(figsize=(6, 6.0*self.dshape[0]/self.dshape[1]))
         fig.canvas.set_window_title('Gamma Value') 
 
         # Show the image
@@ -499,7 +499,7 @@ class Lamb_Oseen(Asda_Calc):
         ------
         same here '''
         
-        fig, ax = plt.subplots(figsize=(6, 6.0*self.dshape[1]/self.dshape[0]))
+        fig, ax = plt.subplots(figsize=(6, 6.0*self.dshape[0]/self.dshape[1]))
 
         fig.canvas.set_window_title('Lamb-Oseen Vortex')
         # Set image title

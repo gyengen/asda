@@ -35,7 +35,7 @@ def artificial_vortex():
     ratio = 0.2  # ratio of expanding speed over rotating speed
     lo = asda.Lamb_Oseen(vmax=vmax, rmax=rmax, ratio_vradial=ratio)
     # Generate vx and vy
-    vx, vy = lo.get_vxvy(x_range=[-100, 100], y_range=[-100, 100])
+    vx, vy = lo.get_vxvy(x_range=[-100, 100], y_range=[-200, 200])
     # Visualise it
     lo.visual_vortex()
 
@@ -56,31 +56,40 @@ def artificial_vortex():
     print('Center Speed', vc)
 
 
-# vel_file = 'vel_demo.npz'  # file in which velocity field will be stored
-# vxvy = np.load(vel_file)
-# vx = vxvy['vx']
-# vy = vxvy['vy']
+def real_data():
+    '''
+    run the demo on real data and compare with the correct answer
 
-# # Perform swirl detection
-# factor = 1
-# # Gamma1 and Gamma2 
-# (gamma1, gamma2) = gamma_values(vx, vy, factor=factor)
-# # Store tau1 and tau2
-# vcimageout((gamma1, gamma2), gamma_file)
-# # Determine Swirls
-# center, edge, points, peak, radius = center_edge(gamma1, gamma2,
-#                                                  factor=factor)
-# # Properties of Swirls
-# ve, vr, vc, ia = vortex_property(center, edge, points, vx, vy,
-#                                  data0)
-# # Save results
-# np.savez('vortex_demo.npz', center=center, edge=edge,
-#          points=points, peak=peak, radius=radius, ia=ia,
-#          ve=ve, vr=vr, vc=vc)
+    Returns
+    -------
+    None.
 
-# # Caculate time consumption
-# end_time = datetime.today()
-# print('Time used ', end_time-beg_time)
+    '''
+    vel_file = 'vel_demo.npz'  # file in which velocity field will be stored
+    vxvy = np.load(vel_file)
+    vx = vxvy['vx']
+    vy = vxvy['vy']
+    
+    # Perform swirl detection
+    factor = 1
+    # Gamma1 and Gamma2 
+    (gamma1, gamma2) = gamma_values(vx, vy, factor=factor)
+    # Store tau1 and tau2
+    vcimageout((gamma1, gamma2), gamma_file)
+    # Determine Swirls
+    center, edge, points, peak, radius = center_edge(gamma1, gamma2,
+                                                      factor=factor)
+    # Properties of Swirls
+    ve, vr, vc, ia = vortex_property(center, edge, points, vx, vy,
+                                      data0)
+    # Save results
+    np.savez('vortex_demo.npz', center=center, edge=edge,
+              points=points, peak=peak, radius=radius, ia=ia,
+              ve=ve, vr=vr, vc=vc)
+    
+    # Caculate time consumption
+    end_time = datetime.today()
+    print('Time used ', end_time-beg_time)
 
-# if __name__ == '__main__':
-#     artificial_vortex()
+if __name__ == '__main__':
+    artificial_vortex()
