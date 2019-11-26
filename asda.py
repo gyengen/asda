@@ -145,7 +145,7 @@ class Asda_Calc:
                         for j in np.arange(r, self.dshape[1]-r)]).T
 
         # Generate velocity field
-        vel = Gen_Vel(index[0],index[1])
+        vel = Gen_Vel(index[1], index[0])
 
         # Iterate over the array gamma
         for dim, (i, j) in enumerate(product(np.arange(r, self.dshape[0]-r, 1),
