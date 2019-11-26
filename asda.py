@@ -243,8 +243,12 @@ class Asda_Calc:
             cen = self.edge_prop['center'][i]
             edg = self.edge_prop['edge'][i]
             pnt = np.array(self.edge_prop['points'][i], dtype=int)
-            x0 = int(round(cen[0]))
-            y0 = int(round(cen[1]))
+            x0 = int(round(cen[1]))
+            y0 = int(round(cen[0]))
+
+            print(np.shape(self.vx), np.shape(self.vx))
+            print(x0, y0)
+
             vcen = [self.vx[x0, y0], self.vy[x0, y0]]
             vc = vc + (vcen, )
             if image is not None:
@@ -259,7 +263,7 @@ class Asda_Calc:
             ve0 = []
             vr0 = []
             for j in range(edg.shape[0]):
-                idx = [edg[j][0], edg[j][1]]
+                idx = [edg[j][1], edg[j][0]]
                 pm = [idx[0]-cen[0], idx[1]-cen[1]]
                 tn = [cen[1]-idx[1], idx[0]-cen[0]]
                 idx = np.array(idx, dtype=int)
