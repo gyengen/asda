@@ -232,46 +232,64 @@ class Asda_Calc:
             ia: average the observation values (intensity or magnetic field)
                 within the vortices if image is given
         '''
-        n_swirl = len(self.edge_prop['center'])
-        print(n_swirl)
-        ve = ()
-        vr = ()
-        vc = ()
-        ia = ()
 
-        for i in range(n_swirl):
+        # Initialising containers
+        ve, vr, vc, ia = (), (), (), ()
+
+        # Iterate over the swirls
+        for i in range(len(self.edge_prop['center'])):
+
+            # Centre and edge of i-th swirl
             cen = self.edge_prop['center'][i]
             edg = self.edge_prop['edge'][i]
+
+            # Points of i-th swirl
             pnt = np.array(self.edge_prop['points'][i], dtype=int)
-            x0 = int(round(cen[1]))
-            y0 = int(round(cen[0]))
 
-            print(np.shape(self.vx), np.shape(self.vx))
-            print(x0, y0)
+            # Calculate velocity of the center, pixel/frame
+            vc += ([self.vx[int(round(cen[1])), int(round(cen[0]))],
+                    self.vy[int(round(cen[1])), int(round(cen[0]))]],)
 
-            vcen = [self.vx[x0, y0], self.vy[x0, y0]]
-            vc = vc + (vcen, )
-            if image is not None:
-                image = np.array(image).T
-                value = 0
-                for pos in pnt:
-                    value = value + image[pos[0], pos[1]]
-                value = value * 1.0 / pnt.shape[0]
+            # Calculate average the observation values
+            if image is None:
+
+                # Appening 'ia' with None if no image
+                ia += (None,) 
+            
             else:
-                value = None
-            ia = ia + (value, )
-            ve0 = []
-            vr0 = []
+
+                # Transpose image
+                image = np.array(image).T
+
+                # Calculate ia
+                value = 0
+                for pos in pnt: value += image[pos[0], pos[1]]
+
+                # Appending 'ia'
+                ia += (value / pnt.shape[0],)
+
+            # Clearing list ve0 and vr0
+            ve0, vr0 = [], []
+
+            # Iterate over the shapes
             for j in range(edg.shape[0]):
+
+                # Edge position
                 idx = [edg[j][1], edg[j][0]]
                 pm = [idx[0]-cen[0], idx[1]-cen[1]]
                 tn = [cen[1]-idx[1], idx[0]-cen[0]]
-                idx = np.array(idx, dtype=int)
-                v = [self.vx[idx[0], idx[1]], self.vy[idx[0], idx[1]]]
+
+                #idx = np.array(idx, dtype=int)
+                v = [self.vx[int(idx[0]), int(idx[1])],
+                     self.vy[int(idx[0]), int(idx[1])]]
+
+                # Appending ve0 amd vr0
                 ve0.append(np.dot(v, pm)/np.linalg.norm(pm))
                 vr0.append(np.dot(v, tn)/np.linalg.norm(tn))
-            ve = ve + (np.nanmean(ve0), )
-            vr = vr + (np.nanmean(vr0), )
+
+            # Appending ve and vt
+            ve += (np.nanmean(ve0),)
+            vr += (np.nanmean(vr0),)
 
         return (ve, vr, vc, ia)
 
