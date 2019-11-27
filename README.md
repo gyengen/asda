@@ -3,12 +3,9 @@
 ## Credit:
 Liu, J., Nelson, C, Erdelyi, R, Automated Swirl Detection Algorithm (ASDA) and Its Application to Simulation and Observational Data, ApJ, 872, 22, 2019 (https://iopscience.iop.org/article/10.3847/1538-4357/aabd34/meta)
 
-This version is rewritten by Norbert Gyenge and Jiajia Liu based on version 1.0 in https://github.com/PyDL/ASDA
+This version is rewritten by Jiajia Liu and Norbert Gyenge based on version 1.0 in https://github.com/PyDL/ASDA
 
-This version is on average 3 times faster than version 1.0
-
-## Please contact me before using these code.
-Email: jj.liu@sheffield.ac.uk
+This version is on average **3 times faster** than version 1.0
 
 # ASDA
 Automatic Swirl Detection Algorithms
@@ -35,10 +32,7 @@ ASDA is a stand-alone Python package, no installation is needed.
 
 ## Instructions for Use:
 Suppose you have vx and vy for the horizontal velocity field. These two arrays are in **(y, x)** order.</br>
-1. import neccessary libraries, including:
-```python
-import asda
-```
+1. import neccessary libraries, `import asda`
 2. Initialize the ASDA class `lo = asda.ASDA_Calc(vx, vy)` </br>
 3. calculate gamma1 and gamma2 values (see the reference) with `gamma = lo.gamma_values()`. The variable `gamma` will be a tuple, where `gamma[..., 0]` is gamma1 and `gamma[..., 1]` is gamma2.</br>
 4. perform the detection of vortices using `center_edge = lo.center_edge()`. The variable `center_edge` will be a dictionary with keywords `"center", "edge", "points", and "peak"`. center is a list containing the pixel location of all swirls in the velocity field. edge is a list of the edges of all vortices. point is a list of all points within swirls. peak is a list of the peak gamma1 values of all swirls. radius is a list of the effective radii of all swirls. Note that center, points and edge are stored in the order of [x, y] and in units of pixels.</br>
