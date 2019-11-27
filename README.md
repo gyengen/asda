@@ -4,8 +4,7 @@
 Liu, J., Nelson, C, Erdelyi, R, Automated Swirl Detection Algorithm (ASDA) and Its Application to Simulation and Observational Data, ApJ, 872, 22, 2019 (https://iopscience.iop.org/article/10.3847/1538-4357/aabd34/meta)
 
 This version is rewritten by Jiajia Liu and Norbert Gyenge based on version 1.0 in https://github.com/PyDL/ASDA
-
-This version is on average **3 times faster** than version 1.0
+This version is on average **3 times faster**
 
 # ASDA
 Automatic Swirl Detection Algorithms
