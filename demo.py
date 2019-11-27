@@ -73,8 +73,8 @@ def real_data():
         edge = [[x1, y1], [x2, y2],...], points = [[x1, y1], [x2, y2],...]
         in units of pixel
     '''
-    vel_file = 'vxvy.npz'  # file in which velocity field will be stored
-    cor_file = 'correct.npz'  # file that stores the correct detection result
+    vel_file = 'data/vxvy.npz'  # file in which velocity field will be stored
+    cor_file = 'data/correct.npz'  # file that stores the correct detection result
     # load velocity field and data
     vxvy = np.load(vel_file)
     vx = vxvy['vx']
