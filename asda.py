@@ -47,10 +47,10 @@ class Asda_Calc:
             raise ValueError("Velocity field vx and vy do not match!")
 
         # Check input parameters
-        if isinstance(self.r, int) is False:
+        if not isinstance(self.r, int):
             raise ValueError("Parameter 'r' must be an integer!")
 
-        if isinstance(self.factor, int) is False:
+        if not isinstance(self.factor, int):
             raise ValueError("Parameter 'factor' must be an integer!")
 
     def gamma_values(self):
@@ -553,7 +553,7 @@ class Lamb_Oseen(Asda_Calc):
         '''
 
         # creat the figure
-        fig, ax = plt.subplots(figsize=(6, 6.0*self.dshape[0]/self.dshape[1]))
+        fig, ax = plt.subplots(figsize=(6, 6.0 * self.dshape[0] / self.dshape[1]))
 
         # set window title
         fig.canvas.set_window_title('Lamb-Oseen Vortex')
