@@ -24,25 +24,28 @@ from scipy.interpolate import interp2d
 
 
 def reform2d(array, factor=1):
-    '''
+    """
     Reform a 2d array by a given factor
 
     Parameters
     ----------
-    array : 2d array to be reformed
+    array : `numpy.ndarray`
+        2d array to be reformed
 
-    factor : int, optional. The default is 1.
+    factor : `int`
+        The array is going to be magnified by the factor. Default is 1.
 
     Returns
     -------
-    array : reformed array
+        `numpy.ndarray`
+        reformed array
 
-    '''
-    if isinstance(factor, int) is False:
-        raise Exception("Parameter 'factor' must be an integer!")
+    """
+    if not isinstance(factor, int):
+        raise ValueError("Parameter 'factor' must be an integer!")
 
     if len(np.shape(array)) != 2:
-        raise Exception("Input array must be 2d!")
+        raise ValueError("Input array must be 2d!")
 
     if factor > 1:
         congridx = interp2d(np.arange(0, array.shape[0]),
@@ -54,21 +57,23 @@ def reform2d(array, factor=1):
 
 
 def points_in_poly(poly):
-    '''
+    """
     Return polygon as grid of points inside polygon. Only works for polygons
     defined with points which are all integers
 
     Parameters
     ----------
-    poly : n x 2 array, defines all points at the edge of a polygon
+    poly : `list` or `numpy.ndarray`
+        n x 2 list, defines all points at the edge of a polygon
 
     Returns
     -------
-    points : n x 2 array, all points within the polygon
+        `list`
+        n x 2 array, all points within the polygon
 
-    '''
+    """
     if np.shape(poly)[1] != 2:
-        raise Exception("Polygon must be defined as a n x 2 array!")
+        raise ValueError("Polygon must be defined as a n x 2 array!")
 
     # convert to integers
     poly = np.array(poly, dtype=int).tolist()

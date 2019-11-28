@@ -24,10 +24,10 @@ import asda
 
 
 def artificial_vortex():
-    '''
+    """
     Generate an artificial vortex using the Lamb_Oseen class in asda, then
     perform the vortex detection and visualisation
-    '''
+    """
     # Generate an artificial vortex
     vmax = 2.0  # rotating speed
     rmax = 50  # radius
@@ -59,7 +59,7 @@ def artificial_vortex():
 
 
 def real_data():
-    '''
+    """
     run the demo on real data and compare with the correct answer
 
     Notes:
@@ -72,7 +72,7 @@ def real_data():
         other outputs are in the order of [x, y], i.e., vc = [vx, vy],
         edge = [[x1, y1], [x2, y2],...], points = [[x1, y1], [x2, y2],...]
         in units of pixel
-    '''
+    """
     vel_file = 'data/vxvy.npz'  # file in which velocity field will be stored
     cor_file = 'data/correct.npz'  # file that stores the correct detection result
     # load velocity field and data
