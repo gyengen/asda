@@ -79,7 +79,7 @@ class Asda_Calc:
         Parameters
         ----------
         None
-        
+
         Returns
         -------
             `tuple`
