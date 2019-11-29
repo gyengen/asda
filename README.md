@@ -1,20 +1,21 @@
 **This is an updated code of the ASDA code in https://github.com/PyDL/ASDA**
 
-## Credit:
-Liu, J., Nelson, C, Erdelyi, R, Automated Swirl Detection Algorithm (ASDA) and Its Application to Simulation and Observational Data, ApJ, 872, 22, 2019 (https://iopscience.iop.org/article/10.3847/1538-4357/aabd34/meta)
+## Cite:
+Liu, J., Nelson, C, Erdelyi, R, Automated Swirl Detection Algorithm (ASDA) and Its Application to Simulation and Observational Data, ApJ, 872, 22, 2019 (https://iopscience.iop.org/article/10.3847/1538-4357/aabd34/meta).
 
-This version is a revision by Norbert Gyenge and Jiajia Liu of version 1.0 in https://github.com/PyDL/ASDA
-This version is on average **3 times faster**
+This version is a revision by Norbert Gyenge and Jiajia Liu of version 1.0 in https://github.com/PyDL/ASDA.
+This repository is created in order to get ASDA ready for merging into sunkit-image.
+This version is on average **3 times faster** than the non-MPI version of version 1.0.
 
 # ASDA
-Automatic Swirl Detection Algorithms
+Automatic Swirl Detection Algorithms.
 
 ## System Requirements
 ### OS Requirements
 ASDA can be run on Windows, Mac OSX or Linux systems with Python 3 and the following dependencies installed.
 
 ### Dependencies:
-**Python 3** with libraries including numpy, scipy, matplotlib, scikit-image, warnings, itertools</br>
+**Python 3** with libraries including numpy, scipy, matplotlib, scikit-image, warnings, itertools.</br>
 **Python management softwares including Anaconda or Virtualenv are recommended**
 
 ## Hardware Requirements:
