@@ -80,7 +80,7 @@ def real_data():
     vx = vxvy['vx']
     vy = vxvy['vy']
     data = vxvy['data']
-
+    
     # Perform swirl detection
     factor = 1
     # Initialise class
@@ -97,17 +97,17 @@ def real_data():
     ve, vr, vc, ia = lo.vortex_property(image=data)
     # load correct detect results
     correct = dict(np.load(cor_file, allow_pickle=True))
-
+    
     # visualise gamma2
     lo.visual_gamma(gamma2=True)
-
+    
     # compare between detection result and correct detection result
     # number of swirls
     n = len(ve)
     nc = len(correct['ve'])
     if n != nc:
         raise Exception("The number of swirls is wrong!")
-
+    
     # find correspondances
     pos = []
     i = 0
@@ -118,7 +118,7 @@ def real_data():
             raise Exception("At least one swirl is not in the correct" +
                             " position")
         pos.append(np.bincount(idx[0]).argmax())
-
+    
     # perform comparison
     peak_diff = []
     radius_diff = []
@@ -138,19 +138,15 @@ def real_data():
         ia_diff.append((ia[i] - correct['ia'][idx]) / correct['ia'][idx])
 
     print('Difference in Peak Gamma1 Value:', np.max(peak_diff),
-          np.min(peak_diff))
+          np.mean(peak_diff), np.min(peak_diff))
     print('Difference in radius:', np.max(radius_diff),
-          np.min(radius_diff))
+          np.mean(radius_diff), np.min(radius_diff))
     print('Difference in rotating speed:', np.max(vr_diff),
-          np.min(vr_diff))
+          np.mean(vr_diff), np.min(vr_diff))
     print('Difference in expanding speed:', np.max(ve_diff),
-          np.min(ve_diff))
+          np.mean(ve_diff), np.min(ve_diff))
     print('Difference in average intensity:', np.max(ia_diff),
-          np.min(ia_diff))
-
-    print('Note: We have changed the algorithm to calculate all points in a ' +
-          'given polygon. So it is NORMAL if you see very tiny difference ' +
-          'between the radius and average intensity. ')
+          np.mean(ia_diff), np.min(ia_diff))
 
 
 if __name__ == '__main__':

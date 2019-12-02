@@ -7,7 +7,8 @@ import numpy as np
 import warnings as wr
 import matplotlib.pyplot as plt
 from itertools import product
-from utils import reform2d, points_in_poly
+from skimage import measure
+from utils import reform2d, points_in_poly, remove_duplicate
 
 
 __author__ = ['Jiajia Liu', 'Norbert Gyenge']
@@ -136,7 +137,7 @@ class Asda_Calc:
 
             Returns
             -------
-                `float`
+                `numpy.ndarray`
                 calculated gamma values for velocity vector vel
             """
 
@@ -230,50 +231,63 @@ class Asda_Calc:
         # Initial dictionary setup
         self.edge_prop = {'center': (), 'edge': (), 'points': (), 'peak': (),
                           'radius': ()}
+        # ------------ Old algorithm, depracated -----------------------------
+        # # Turn interactive plotting off
+        # plt.ioff()
+        # plt.figure(-1)
+        # # Find countours
+        # cs = plt.contour(self.gamma[..., 1], levels=[-2 / np.pi, 2 / np.pi])
+        # plt.close(-1)
 
-        # Turn interactive plotting off
-        plt.ioff()
-        plt.figure(-1)
-        # Find countours
-        cs = plt.contour(self.gamma[..., 1], levels=[-2 / np.pi, 2 / np.pi])
-        plt.close(-1)
+        # # iterate over all contours
+        # for i in range(len(cs.collections)):
+        #     # Extract a contour and iterate over
+        #     for c in cs.collections[i].get_paths():
+        #         # convert the single contour to list
+        #         v = c.vertices
+        #         v = np.rint(c.vertices).tolist()
+        # ------------ Old algorithm, depracated -----------------------------
 
-        # iterate over all contours
-        for i in range(len(cs.collections)):
-            # Extract a contour and iterate over
-            for c in cs.collections[i].get_paths():
-                # convert the single contour to list
-                v = np.rint(c.vertices).tolist()
-                # find all points in the contour
-                ps = points_in_poly(v)
-                # gamma1 value of all points in the contour
-                dust = []
-                for p in ps:
-                    dust.append(self.gamma[..., 0][int(p[1]), int(p[0])])
+        cs = np.array(measure.find_contours(self.gamma[..., 1].T, -2 / np.pi))
+        cs_pos = np.array(measure.find_contours(self.gamma[..., 1].T,
+                                                2 / np.pi))
+        if len(cs) == 0:
+            cs = cs_pos
+        elif len(cs_pos) != 0:
+            cs = np.append(cs, cs_pos, 0)
+        for i in range(np.shape(cs)[0]):
+            v = np.rint(cs[i])
+            v = remove_duplicate(v)
+            # find all points in the contour
+            ps = points_in_poly(v)
+            # gamma1 value of all points in the contour
+            dust = []
+            for p in ps:
+                dust.append(self.gamma[..., 0][int(p[1]), int(p[0])])
 
-                # determin swirl properties
-                if len(dust) > 1:
-                    # effective radius
-                    re = np.sqrt(np.array(ps).shape[0] / np.pi) / self.factor
-                    # only consider swirls with re >= rmin and maximum gamma1
-                    # value greater than gamma_min
-                    if np.max(np.fabs(dust)) >= gamma_min and re >= rmin:
-                        # Extract the index, only first dimension
-                        idx = np.where(np.fabs(dust) ==
-                                       np.max(np.fabs(dust)))[0][0]
-                        # Update dictionary key 'center'
-                        self.edge_prop['center'] += \
-                            (np.array(ps[idx]) / self.factor, )
-                        # Update dictionary key 'edge'
-                        self.edge_prop['edge'] += \
-                            (np.array(v) / self.factor, )
-                        # Update dictionary key 'points'
-                        self.edge_prop['points'] += \
-                            (np.array(ps) / self.factor, )
-                        # Update dictionary key 'peak'
-                        self.edge_prop['peak'] += (dust[idx],)
-                        # Update dictionary key 'radius'
-                        self.edge_prop['radius'] += (re,)
+            # determin swirl properties
+            if len(dust) > 1:
+                # effective radius
+                re = np.sqrt(np.array(ps).shape[0] / np.pi) / self.factor
+                # only consider swirls with re >= rmin and maximum gamma1
+                # value greater than gamma_min
+                if np.max(np.fabs(dust)) >= gamma_min and re >= rmin:
+                    # Extract the index, only first dimension
+                    idx = np.where(np.fabs(dust) ==
+                                   np.max(np.fabs(dust)))[0][0]
+                    # Update dictionary key 'center'
+                    self.edge_prop['center'] += \
+                        (np.array(ps[idx]) / self.factor, )
+                    # Update dictionary key 'edge'
+                    self.edge_prop['edge'] += \
+                        (np.array(v) / self.factor, )
+                    # Update dictionary key 'points'
+                    self.edge_prop['points'] += \
+                        (np.array(ps) / self.factor, )
+                    # Update dictionary key 'peak'
+                    self.edge_prop['peak'] += (dust[idx],)
+                    # Update dictionary key 'radius'
+                    self.edge_prop['radius'] += (re,)
 
         return self.edge_prop
 

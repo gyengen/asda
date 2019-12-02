@@ -94,3 +94,33 @@ def points_in_poly(poly):
             points.append(p)
 
     return points
+
+
+def remove_duplicate(edge):
+    """
+    Remove duplicated points in a the edge of a polygon
+
+    Parameters
+    ----------
+    edge : `list` or `numpy.ndarray`
+        n x 2 list, defines all points at the edge of a polygon
+
+    Returns
+    -------
+        `list`
+        same as edge, but with duplicated points removed
+    """
+
+    shape = np.shape(edge)
+    if shape[1] != 2:
+        raise ValueError("Polygon must be defined as a n x 2 array!")
+
+    new_edge = []
+    for i in range(shape[0]):
+        p = edge[i]
+        if not isinstance(p, list):
+            p = p.tolist()
+        if p not in new_edge:
+            new_edge.append(p)
+    
+    return new_edge
