@@ -1,4 +1,4 @@
-**This is an updated code of the ASDA code in https://github.com/PyDL/ASDA**
+**This is another version the ASDA code in https://github.com/PyDL/ASDA**
 
 ## Cite:
 Liu, J., Nelson, C, Erdelyi, R, Automated Swirl Detection Algorithm (ASDA) and Its Application to Simulation and Observational Data, ApJ, 872, 22, 2019 (https://iopscience.iop.org/article/10.3847/1538-4357/aabd34/meta).
