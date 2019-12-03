@@ -25,10 +25,10 @@ ASDA requires a standard computer with enough CPU and computation power dependin
 ASDA is a stand-alone Python package, no installation is needed.
 
 ## Description of Files (More information can be found in each file):
-**asda.py**: Main programm of the implication of the swirl detection algorithms</br>
-**utils.py**: utility functions</br>
-**demo.py**: demo</br>
-**data**: this folder contains data need for running the demo</br>
+**asda.py**: Main programm of the implication of the swirl detection algorithms.</br>
+**utils.py**: utility functions.</br>
+**demo.py**: demo.</br>
+**data**: this folder contains data need for running the demo.</br>
 
 ## Instructions for Use:
 Suppose you have vx and vy for the horizontal velocity field. These two arrays are in **(y, x)** order.</br>
